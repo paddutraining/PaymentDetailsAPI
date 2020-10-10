@@ -1,0 +1,59 @@
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            app.UseCors(options =>
+                options.WithOrigins("http://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+        
+             public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                });
+            services.AddDbContext<Emp_DetailsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("WebApi")));
+            services.AddCors();
+        }
+        
+        thanks
+        
+        micorsoft.entityframeworkcore
+micorsoft.entityframeworkcore.sqlserver
+micorsoft.entityframeworkcore.tools	
+Bricelam.EntityFrameworkCore.Pluralizer
+
+Scaffold-DbContext "Data Source=DESKTOP-U79ERS6\PADDU;Initial Catalog=WebApi;Persist Security Info=True;User ID=sa;Password=Cyient#3" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+
+Scaffold-DbContext -Connection Name=WebApi Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force   
+
+  "Connectionstrings": { "webapi": "Data Source=DESKTOP-U79ERS6\\PADDU;Initial Catalog=Emp_Details;User ID=sa;Password=Cyient#3" }
+
+custumized method
+   // GET: api/Associates/name
+        [HttpGet("bynamepass/{Name}/{pass}")]
+        public async Task<ActionResult<IEnumerable<Associate>>> Getbynamepass(string Name,string pass)
+        {
+            return await _context.Associates.Where(u => u.Name == Name && u.Password==pass).ToListAsync();
+        }
+        calling :http://localhost:55136/api/Associates/bynamepass/paddu/paddu
+install packages by command:Install-Package Microsoft.EntityFrameworkCore.Sqlite
